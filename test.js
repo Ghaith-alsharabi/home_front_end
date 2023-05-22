@@ -7,6 +7,8 @@ function generateAndRenderHTML() {
 </head>
 <body>
     <p>shit</p>
+    <p>shit</p>
+    <p>shit</p>
 </body>
 </html>`;
 
