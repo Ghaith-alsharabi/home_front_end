@@ -6,7 +6,7 @@ function generateAndRenderHTML() {
     <title>title</title>
 </head>
 <body>
-    
+    <p>shit</p>
 </body>
 </html>`;
 
