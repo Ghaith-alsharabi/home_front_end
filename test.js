@@ -1,10 +1,16 @@
 function generateAndRenderHTML() {
-  const htmlCode = `
-  <body>
-    <p>hi hi</p>
-  </body>
-`;
-  const bodyElement = document.querySelector('body');
-  bodyElement.innerHTML = htmlCode;
-}
+  const htmlCode = `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>title</title>
+</head>
+<body>
+    
+</body>
+</html>`;
 
+  const container = document.createElement('div');
+  container.innerHTML = htmlCode;
+  document.body.appendChild(container);
+}
