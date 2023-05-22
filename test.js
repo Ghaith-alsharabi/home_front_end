@@ -1,18 +1,9 @@
-function generateAndRenderHTML() {
-  const htmlCode = `<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8" />
-    <title>title</title>
-</head>
-<body>
-    <p>shit</p>
-    <p>shit</p>
-    <p>shit</p>
-</body>
-</html>`;
-
-  const container = document.createElement('div');
-  container.innerHTML = htmlCode;
-  document.body.appendChild(container);
+function fetchHTMLTemplate() {
+  fetch('https://raw.githubusercontent.com/Ghaith-alsharabi/home_front_end/master/test.html')
+    .then(response => response.text())
+    .then(htmlContent => {
+      const templateContainer = document.getElementById('templateContainer');
+      templateContainer.innerHTML = htmlContent;
+    })
+    .catch(error => console.error('Error fetching HTML template:', error));
 }
