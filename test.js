@@ -1,9 +1,14 @@
-function fetchHTMLTemplate() {
-  fetch('https://raw.githubusercontent.com/Ghaith-alsharabi/home_front_end/master/test.html')
-    .then(response => response.text())
-    .then(htmlContent => {
-      const templateContainer = document.getElementById('templateContainer');
-      templateContainer.innerHTML = htmlContent;
-    })
-    .catch(error => console.error('Error fetching HTML template:', error));
+function generateHTMLCode() {
+  const htmlCode = `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script src="https://raw.githubusercontent.com/your-username/your-repo/your-branch/your-script.js"></script>
+</body>
+</html>`;
+
+  return htmlCode;
 }
