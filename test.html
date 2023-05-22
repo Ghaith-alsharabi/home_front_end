@@ -1,10 +1,544 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8" />
-    <title>Render HTML</title>
-</head>
-<body>
-    <p>hi hi</p>
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <title>Clickable Image</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+	  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
+	<script src="http://materializecss.com/extras/noUiSlider/nouislider.js"></script>
+	<script src="uPixels.js"></script>
+  
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.css">
+	<link href="http://materializecss.com/extras/noUiSlider/nouislider.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="uPixels.css">
+  
+	<meta name="apple-mobile-web-app-title" content="uPixels">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<link rel="apple-touch-icon"
+	  href="https://raw.githubusercontent.com/petabite/uPixels/master/images/apple-icon-114x114px.png">
+	<link rel="apple-touch-startup-image"
+	  href="https://raw.githubusercontent.com/petabite/uPixels/master/images/launchscreen.png">
+	<link rel="shortcut icon" href="https://raw.githubusercontent.com/petabite/uPixels/master/images/favicon.ico">
+	<meta name="apple-mobile-web-app-status-bar-style" content="translucent black">
+	<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
+    <style>
+      .image-container {
+        position: relative;
+        display: inline-block;
+      }
+
+      .image-container img {
+        display: block;
+        max-width: 100%;
+      }
+
+      .click-area {
+        position: absolute;
+        cursor: pointer;
+        background-color: transparent;
+        z-index: 1;
+      }
+
+      .click-area::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.5);
+        transition: width 0.3s, height 0.3s;
+        pointer-events: none;
+      }
+
+      .click-area:hover::before {
+        width: 100%;
+        height: 100%;
+      }
+
+	  .popup {
+		display: none;
+		position: fixed;
+		width: 90%;
+		height: 90%;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background-color: #fff;
+		border: 1px solid #000;
+		padding: 10px;
+		z-index: 2;
+		overflow: auto;
+		box-sizing: border-box;
+	  }
+
+	  /* Show the drop-down menu when the corresponding click-area is clicked */
+	  .click-area[aria-controls][aria-expanded="true"] ~ .popup {
+		display: block;
+	  }
+
+	  .form-container {
+		position: absolute;
+		top: 50%;
+		left: 100%;
+		transform: translateY(-50%);
+	  }
+
+	  .popup-content {
+		display: flex;
+	  }
+
+	  .checkbox-container {
+		position: absolute;
+		display: flex;
+		flex-direction: column;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		align-items: flex-start;
+		justify-content: flex-start;
+		padding: 10px;
+		pointer-events: none;
+	  }
+
+	  .checkbox-container label {
+		background-color: rgba(255, 255, 255, 0.8);
+		padding: 5px;
+		margin: 5px;
+		pointer-events: all;
+	  }
+
+		/* Add this to target the second popup specifically 
+		#popup-12 {
+			width: 70%;
+			height: 70%;
+		} */
+	  
+		ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			overflow: hidden;
+			background-color: #333;
+		}
+		  
+		li {
+			float: left;
+		}
+		  
+		li a {
+			display: block;
+			color: white;
+			text-align: center;
+			padding: 14px 16px;
+			text-decoration: none;
+		}
+		  
+		li a:hover {
+			background-color: #111;
+		}
+    </style>
+  </head>
+  <body>
+	<ul>
+		<li><a class="active" href="#home">Home</a></li>
+		<li><a href="#news">News</a></li>
+		<li><a href="#contact">Contact</a></li>
+		<li><a href="#about">About</a></li>
+	</ul>
+
+    <div class="image-container">
+      <img src="d.jpg" alt="Clickable Image">
+
+      <div class="click-area" role="button" aria-expanded="false" aria-controls="popup-1" style="top: 25%; left: 25%; width: 25%; height: 25%;"></div>
+      <div class="click-area" role="button" aria-expanded="false" aria-controls="popup-2" style="top: 25%; left: 50%; width: 25%; height: 25%;"></div>
+      <div class="click-area" role="button" aria-expanded="false" aria-controls="popup-3" style="top: 50%; left: 25%; width: 25%; height: 25%;"></div>
+      <div class="click-area" role="button" aria-expanded="false" aria-controls="popup-4" style="top: 50%; left: 50%; width: 25%; height: 25%;"></div>
+
+	  <div class="popup" id="popup-1">
+		<div class="popup-content">
+		  <div style="position: relative;">
+			<img src="d.jpg" alt="Image">
+			<div class="checkbox-container">
+			  <label>
+				<input type="checkbox" name="checkbox1" value="checkbox1">
+			  </label>
+			  <label>
+				<input type="checkbox" name="checkbox2" value="checkbox2">
+			  </label>
+			</div>
+		  </div>
+
+		  <div class="click-area" role="button" aria-expanded="false" aria-controls="popup-12" style="top: 50%; left: 50%; width: 25%; height: 25%;"></div>
+
+		  <div class="form-container">
+			<form id="form-1" class="form">
+				
+  <div class="controls row center-align z-depth-3">
+    <h5>Controls</h5>
+    <div class="colorpicker col s6">
+      <h6>Color Picker:</h6>
+      <input type="text" id="colorpicker">
+      <form>
+        <p class="random-color">
+          <label>
+            <input type="checkbox" id="random-color-checkbox" onchange="togglePickers();" />
+            <span>Random Color</span>
+          </label>
+        </p>
+        <p class="default-delay">
+          <label>
+            <input type="checkbox" id="default-delay-checkbox" checked="checked" onchange="toggleDelaySlider();" />
+            <span>Default Delay</span>
+          </label>
+        </p>
+      </form>
+    </div>
+    <div class="settings col s6">
+      <div class="brightness">
+        <h6>Brightness: <span id="brightness-label">50</span>%</h6>
+        <div id="brightness-slider" class="slider"></div>
+      </div>
+      <div class="delay">
+        <h6>Delay: <span id="delay-label">10</span> ms</h6>
+        <div id="delay-slider" class="slider"></div>
+      </div>
+      <a class="waves-effect waves-light btn-small red clear" onclick="clearStrip();"><i
+          class="material-icons left">clear</i>clear strip</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12">
+      <ul class="tabs">
+        <li class="tab col s6"><a class="active" href="#animations"><i class="material-icons">lightbulb_outline</i><span
+              class="tab-title">animations</span></a></li>
+        <li class="tab col s5"><a href="#colors"><i class="material-icons">color_lens</i><span
+              class="tab-title">colors</span></a></li>
+        <li class="tab col s4"><a href="#about"><i class="material-icons">info_outline</i><span
+              class="tab-title">about</span></a></li>
+      </ul>
+    </div>
+    <div id="animations" class="col s12">
+      <ul class="collapsible popout">
+        <li class="rainbow">
+          <div class="collapsible-header"><i class="material-icons">looks</i>Rainbow</div>
+          <div class="collapsible-body center-align">
+            <a class="btn-floating btn-small waves-effect waves-light red"
+              onclick="changeVal('.rainbow .iterations', -1)"><i class="material-icons">remove</i></a>
+            <input type="number" class="iterations" value="2">
+            <a class="btn-floating btn-small waves-effect waves-light red"
+              onclick="changeVal('.rainbow .iterations', 1)"><i class="material-icons">add</i></a><br>
+            <a class="waves-effect waves-light btn-floating valign-middle play" onclick="rainbow();"><i
+                class="material-icons">play_arrow</i></a>
+          </div>
+        </li>
+        <li class="rainbowChase">
+          <div class="collapsible-header"><i class="material-icons">looks</i>Rainbow Chase</div>
+          <div class="collapsible-body center-align">
+            <a class="waves-effect waves-light btn-floating valign-middle play" onclick="rainbowChase();"><i
+                class="material-icons">play_arrow</i></a>
+          </div>
+        </li>
+        <li class="bounce">
+          <div class="collapsible-header"><i class="material-icons">call_missed</i>Bounce</div>
+          <div class="collapsible-body center-align">
+            <a class="waves-effect waves-light btn-floating valign-middle play" onclick="bounce();"><i
+                class="material-icons">play_arrow</i></a>
+          </div>
+        </li>
+        <li class="sparkle">
+          <div class="collapsible-header"><i class="material-icons">auto_graph</i>Sparkle</div>
+          <div class="collapsible-body center-align">
+            <a class="waves-effect waves-light btn-floating valign-middle play" onclick="sparkle();"><i
+                class="material-icons">play_arrow</i></a>
+          </div>
+        </li>
+        <li class="wipe">
+          <div class="collapsible-header"><i class="material-icons">read_more</i>Wipe</div>
+          <div class="collapsible-body center-align">
+            <a class="waves-effect waves-light btn-floating valign-middle play" onclick="wipe();"><i
+                class="material-icons">play_arrow</i></a>
+          </div>
+        </li>
+        <li class="chase">
+          <div class="collapsible-header"><i class="material-icons">more_horiz</i>Chase</div>
+          <div class="collapsible-body center-align">
+            <form class="options">
+              <label>Direction:</label>
+              <p>
+                <label>
+                  <input class="with-gap" name="group3" type="radio" id="left" checked />
+                  <span>Left</span>
+                </label>
+              </p>
+              <p>
+                <label>
+                  <input class="with-gap" name="group3" type="radio" checked />
+                  <span>Right</span>
+                </label>
+              </p>
+            </form>
+            <a class="waves-effect waves-light btn-floating valign-middle" onclick="chase();"><i
+                class="material-icons">play_arrow</i></a>
+          </div>
+        </li>
+        <li class="rgbFade">
+          <div class="collapsible-header"><i class="material-icons">toll</i>RGB Fade</div>
+          <div class="collapsible-body center-align">
+            <a class="waves-effect waves-light btn-floating valign-middle" onclick="rgbFade();"><i
+                class="material-icons">play_arrow</i></a>
+          </div>
+        </li>
+        <li class="altColors">
+          <div class="collapsible-header"><i class="material-icons">hdr_strong</i>Alernating Colors</div>
+          <div class="collapsible-body center-align">
+            <h5>Select Second Color:</h5>
+            <input type="text" id="second-colorpicker"><br>
+            <a class="waves-effect waves-light btn-floating valign-middle" onclick="altColors();"><i
+                class="material-icons">play_arrow</i></a>
+          </div>
+        </li>
+        <li class="randomFill">
+          <div class="collapsible-header"><i class="material-icons">blur_on</i>Random Fill</div>
+          <div class="collapsible-body center-align">
+            <a class="waves-effect waves-light btn-floating valign-middle" onclick="randomFill();"><i
+                class="material-icons">play_arrow</i></a>
+          </div>
+        </li>
+        <li class="fillFromMiddle">
+          <div class="collapsible-header"><i class="material-icons">code</i>Fill from Middle</div>
+          <div class="collapsible-body center-align">
+            <a class="waves-effect waves-light btn-floating valign-middle" onclick="fillFromMiddle();"><i
+                class="material-icons">play_arrow</i></a>
+          </div>
+        </li>
+        <li class="fillFromSides">
+          <div class="collapsible-header"><i class="material-icons">compare_arrows</i>Fill from Sides</div>
+          <div class="collapsible-body center-align">
+            <a class="waves-effect waves-light btn-floating valign-middle" onclick="fillFromSides();"><i
+                class="material-icons">play_arrow</i></a>
+          </div>
+        </li>
+        <li class="fillStrip">
+          <div class="collapsible-header"><i class="material-icons">fast_forward</i>Fill Strip</div>
+          <div class="collapsible-body center-align">
+            <a class="waves-effect waves-light btn-floating valign-middle" onclick="fillStrip();"><i
+                class="material-icons">play_arrow</i></a>
+          </div>
+        </li>
+        <li class="christmas">
+          <div class="collapsible-header"><i class="material-icons">star_half</i>Christmas</div>
+          <div class="collapsible-body center-align">
+            <a class="waves-effect waves-light btn-floating valign-middle" onclick="christmas();"><i
+                class="material-icons">play_arrow</i></a>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div id="colors" class="col s12">
+      <div class="color-buttons">
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[205, 10, 10]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[238, 51, 91]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[255, 0, 0]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[255, 50, 50]'></a>
+
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[255, 43, 0]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[205, 55, 10]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[255, 108, 8]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[210, 129, 15]'></a>
+
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[255, 240, 0]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[212, 238, 24]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[168, 200, 20]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[196, 207, 21]'></a>
+
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[43, 255, 0]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[73, 255, 0]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[82, 225, 25]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[36, 187, 6]'></a>
+
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[0, 23, 255]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[0, 255, 78]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[0, 204, 255]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[39, 211, 215]'></a>
+
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[99, 0, 255]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[205, 0, 255]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[172, 48, 202]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[131, 74, 220]'></a>
+
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[255, 0, 199]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[255, 0, 230]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[187, 52, 150]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[200, 74, 74]'></a>
+
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[255, 255, 255]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[170, 182, 80]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[199, 220, 46]'></a>
+        <a class="btn-floating btn-large waves-effect waves-light" data-color='[255, 153, 58]'></a>
+      </div>
+      <h6 class="center-align">Set strip to color picker selection:</h6>
+      <div class="buttons center-align">
+        <a class="btn-floating btn-large waves-effect waves-light blue"
+          onclick="setStripToColor(getColorSelection());"><i class="material-icons">play_arrow</i></a>
+      </div>
+    </div>
+  </div>
+  
+			  <select name="dropdown">
+				<option value="option1">Option 1</option>
+				<option value="option2">Option 2</option>
+			  </select>
+			  <button type="submit">Submit</button>
+			  <button class="close-button" type="button">Close</button>
+			</form>
+		  </div>
+		</div>
+	  </div>
+
+	  <div class="popup" id="popup-12">
+		<div class="popup-content">
+		  <div style="position: relative;">
+			<img src="d.jpg" alt="Image">
+			<div class="checkbox-container">
+			  <label>
+				<input type="checkbox" name="checkbox1" value="checkbox1">
+			  </label>
+			  <label>
+				<input type="checkbox" name="checkbox2" value="checkbox2">
+			  </label>
+			</div>
+		  </div>
+
+		  <div class="click-area" role="button" aria-expanded="false" aria-controls="popup-4" style="top: 50%; left: 50%; width: 25%; height: 25%;"></div>
+
+		  <div class="form-container">
+			<form id="form-1" class="form">
+			  <select name="dropdown">
+				<option value="option1">Option 1asda</option>
+				<option value="option2">Option 2asdd</option>
+			  </select>
+			  <button type="submit">Submit</button>
+			  <button class="close-button" type="button">Close</button>
+			</form>
+		  </div>
+		</div>
+	  </div>
+
+      <div class="popup" id="popup-2">
+        <!-- <ul>
+          <li>Menu item 2</li>
+        </ul> -->
+		<img src="d.jpg" alt="Clickable Image">
+		<button class="close-button" type="button">Close</button>
+      </div>
+
+      <div class="popup" id="popup-3">
+        <!-- <ul>
+          <li>Menu item 3</li>
+        </ul> -->
+		<img src="d.jpg" alt="Clickable Image">
+		<button class="close-button" type="button">Close</button>
+      </div>
+
+      <div class="popup" id="popup-4">
+		<img src="d.jpg" alt="Clickable Image">
+        <!-- <ul>
+          <li>Menu item 4</li>
+        </ul> -->
+		<button class="close-button" type="button">Close</button>
+      </div>
+    </div>
+
+
+    <script>
+		const clickAreas = document.querySelectorAll('.click-area');
+		clickAreas.forEach((clickArea) => {
+			clickArea.addEventListener('click', (event) => {
+			  event.stopPropagation();
+			  const popupId = clickArea.getAttribute('aria-controls');
+			  const popup = document.getElementById(popupId);
+			  const visible = window.getComputedStyle(popup).getPropertyValue('display') === 'block';
+		  
+			  // Check if the clickArea is inside a popup
+			  const isNested = clickArea.closest('.popup') !== null;
+			  hideAllPopups({ target: event.target, isNested });
+			  if (!visible) {
+				popup.style.display = 'block';
+				document.addEventListener('click', hideAllPopups);
+			  }
+			});
+		  });
+		  
+		  function hideAllPopups({ target, isNested }) {
+			let targetInsidePopup = false;
+			const popups = document.querySelectorAll('.popup');
+			popups.forEach((popup) => {
+			  if (popup.contains(target) && target.tagName.toLowerCase() !== 'select') {
+				targetInsidePopup = true;
+			  }
+			});
+		  
+			if (targetInsidePopup) {
+			  return;
+			}
+		  
+			const popupsToHide = isNested
+			  ? document.querySelectorAll('.popup .popup') // Only hide nested popups if the click is within a nested popup
+			  : document.querySelectorAll('.popup');
+			popupsToHide.forEach((popup) => {
+			  popup.style.display = 'none';
+			});
+			document.removeEventListener('click', hideAllPopups);
+		  }
+		  
+		  const forms = document.querySelectorAll('.form');
+		  forms.forEach((form) => {
+			form.addEventListener('submit', (event) => {
+			  event.preventDefault(); // Prevent form from being submitted and causing a page reload
+			  event.stopPropagation(); // Add this line to prevent the popup from closing on form submit
+	  
+			  const formData = new FormData(form);
+			  const checkboxes = [];
+			  const dropdown = formData.get('dropdown');
+	  
+			  formData.forEach((value, key) => {
+				if (key.startsWith('checkbox')) {
+				  checkboxes.push(value);
+				}
+			  });
+	  
+			  console.log('Checked checkboxes:', checkboxes);
+			  console.log('Selected dropdown value:', dropdown);
+	  
+			  // Send the data or process it as needed
+			});
+		  });
+	  
+		  // Prevent t=he popup from closing when clicking on the dropdown
+		  const dropdowns = document.querySelectorAll('select');
+		  dropdowns.forEach((dropdown) => {
+			dropdown.addEventListener('click', (event) => {
+			  event.stopPropagation();
+			});
+		  });
+
+		  const closeButtons = document.querySelectorAll('.close-button');
+		  closeButtons.forEach((button) => {
+			button.addEventListener('click', () => {
+				const popup = button.closest('.popup');
+				popup.style.display = 'none';
+			});
+		});
+    </script>
+  </body>
 </html>
