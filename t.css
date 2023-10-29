@@ -1,0 +1,9 @@
+/* Adjust the width of the dropdown */
+ha-paper-dropdown-menu {
+  width: 60px; /* Set the desired width */
+}
+
+/* Optionally, adjust the width of the dropdown content */
+paper-listbox {
+  width: 50px; /* Set the desired width */
+}
