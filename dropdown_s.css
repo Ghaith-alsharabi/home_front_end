@@ -1,14 +1,9 @@
+/* Adjust the width of the dropdown */
 ha-paper-dropdown-menu {
-  --paper-input-container-label: {
-    font-size: 14px;  /* Adjust the font size as needed */
-  };
-  --paper-dropdown-menu-input: {
-    font-size: 14px;  /* Adjust the font size as needed */
-  };
-  --paper-input-container-underline-focus: {
-    border-color: var(--primary-color);  /* Adjust the border color for focus */
-  };
-  --paper-dropdown-menu-ripple: {
-    color: var(--primary-color);  /* Adjust the ripple color */
-  };
+  width: 150px; /* Set the desired width */
+}
+
+/* Optionally, adjust the width of the dropdown content */
+paper-listbox {
+  width: 150px; /* Set the desired width */
 }
