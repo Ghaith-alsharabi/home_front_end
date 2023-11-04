@@ -1,0 +1,5 @@
+ha-time-picker {
+  --paper-time-picker-input-ampm-label: {
+    display: none;
+  }
+}
